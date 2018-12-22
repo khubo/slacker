@@ -1,4 +1,8 @@
-const { channel, botId } = require('../config');
+const { channel, botId, projectDir } = require('../config');
+const { promisify } = require('util');
+const nodeCmd = require('node-cmd');
+
+const cmd = promisify(nodeCmd.get, { multiArgs: true, context: nodeCmd });
 
 /*
  * read bot messages and attach commands to them
@@ -29,6 +33,9 @@ const handleMessage = (bot, words) => {
     case 'hello':
       sayHello(bot);
       break;
+    case 'deploy':
+      deployBranch(bot, words[1]);
+      break;
     default:
       what(bot);
   }
@@ -48,4 +55,22 @@ const what = bot => {
   bot.postMessageToChannel(channel, 'sorry I dont understand');
 };
 
+/*
+ * deploy a particular branch of the project
+ */
+const deployBranch = async (bot, branch = null) => {
+  // if branch is not specified
+  if (branch === null) {
+    bot.postMessageToChannel(channel, 'undefined branch!');
+    return;
+  }
+
+  let result = await cmd(`
+    cd ${projectDir}&&
+    git fetch origin ${branch}&&
+    git checkout origin/${branch}
+  `);
+  console.log(result);
+  bot.postMessageToChannel(channel, 'branch successfully deployed');
+};
 module.exports = addSuperPowers;

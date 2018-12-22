@@ -3,5 +3,5 @@ module.exports = {
   channel: 'test-bot',
   botName: 'mangal b0t',
   botId: '<@UEUCLCA5Q>',
-  projectDir: '~/snapwiz/edulastic-poc'
+  projectDir: process.env.PROJECT_DIR
 };
