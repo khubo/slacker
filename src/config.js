@@ -2,5 +2,6 @@ module.exports = {
   token: process.env.TOKEN,
   channel: 'test-bot',
   botName: 'mangal b0t',
-  botId: '<@UEUCLCA5Q>'
+  botId: '<@UEUCLCA5Q>',
+  projectDir: '~/snapwiz/edulastic-poc'
 };
