@@ -35,6 +35,8 @@ const handleMessage = (bot, words) => {
       break;
     case 'deploy':
       deployBranch(bot, words[1]);
+    case 'update':
+      updateBranch(bot);
       break;
     default:
       what(bot);
@@ -69,8 +71,22 @@ const deployBranch = async (bot, branch = null) => {
     cd ${projectDir}&&
     git fetch origin ${branch}&&
     git checkout origin/${branch}
+    yarn install
   `);
   console.log(result);
   bot.postMessageToChannel(channel, 'branch successfully deployed');
 };
 module.exports = addSuperPowers;
+
+/*
+ * update the current branch
+ */
+const udpateBranch = async bot => {
+  let result = await cmd(`
+    cd ${projectDir}&&
+    git pull &&
+    yarn install
+  `);
+  console.log(result);
+  bot.postMessageToChannel(channel, 'branch updated');
+};
